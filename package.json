@@ -1,0 +1,25 @@
+{
+  "name": "testcontainers-node-redis-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --timeout 10000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/viglucci/testcontainers-node-redis-example.git"
+  },
+  "author": "kviglucci@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/viglucci/testcontainers-node-redis-example/issues"
+  },
+  "homepage": "https://github.com/viglucci/testcontainers-node-redis-example#readme",
+  "devDependencies": {
+    "chai": "^4.3.3",
+    "ioredis": "^4.23.0",
+    "mocha": "^8.3.0",
+    "testcontainers": "^7.4.0"
+  }
+}
