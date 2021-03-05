@@ -1,6 +1,7 @@
 const Redis = require("ioredis");
 const { GenericContainer, Network, Wait } = require("testcontainers");
 const { expect } = require("chai");
+const uniqid = require("uniqid");
 
 describe("RedisClusterTest", () => {
   let container;
@@ -56,14 +57,26 @@ describe("RedisClusterTest", () => {
     redisClient = new Redis.Cluster(hosts, { natMap });
   });
 
+  beforeEach(() => {
+    uniqKey = uniqid();
+    uniqValue = uniqid();
+  });
+
   after(async () => {
     await redisClient && redisClient.quit();
     await container && container.stop();
     await network && network.stop();
   });
 
-  it("should set and retrieve values from the Redis cluster", async () => {
-    await redisClient.set("key", "val");
-    expect(await redisClient.get("key")).to.equal("val");
+  it("should set and retrieve values from Redis", async () => {
+    await redisClient.set(uniqKey, uniqValue);
+    expect(await redisClient.get(uniqKey)).to.equal(uniqValue);
+  });
+
+  it("should delete values from Redis", async () => {
+    await redisClient.set(uniqKey, uniqValue);
+    expect(await redisClient.get(uniqKey)).to.equal(uniqValue);
+    await redisClient.del(uniqKey);
+    expect(await redisClient.get(uniqKey)).to.equal(null);
   });
 });
