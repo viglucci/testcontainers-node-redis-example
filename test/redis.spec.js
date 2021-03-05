@@ -30,8 +30,8 @@ describe("RedisTest", () => {
   });
 
   after(async () => {
-    await redisClient && redisClient.quit();
-    await container && container.stop();
+     redisClient && await redisClient.quit();
+     container && await container.stop();
   });
 
   it("should set and retrieve values from Redis", async () => {
