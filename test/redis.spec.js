@@ -1,10 +1,13 @@
 const Redis = require("ioredis");
 const { GenericContainer } = require("testcontainers");
 const { expect } = require("chai");
+const uniqid = require("uniqid");
 
 describe("RedisTest", () => {
   let container;
   let redisClient;
+  let uniqKey;
+  let uniqValue;
 
   before(async () => {
     // "redis" is the name of the Docker imaage to download and run
@@ -21,13 +24,25 @@ describe("RedisTest", () => {
     });
   });
 
+  beforeEach(() => {
+    uniqKey = uniqid();
+    uniqValue = uniqid();
+  });
+
   after(async () => {
     await redisClient && redisClient.quit();
     await container && container.stop();
   });
 
   it("should set and retrieve values from Redis", async () => {
-    await redisClient.set("key", "val");
-    expect(await redisClient.get("key")).to.equal("val");
+    await redisClient.set(uniqKey, uniqValue);
+    expect(await redisClient.get(uniqKey)).to.equal(uniqValue);
+  });
+
+  it("should delete values from Redis", async () => {
+    await redisClient.set(uniqKey, uniqValue);
+    expect(await redisClient.get(uniqKey)).to.equal(uniqValue);
+    await redisClient.del(uniqKey);
+    expect(await redisClient.get(uniqKey)).to.equal(null);
   });
 });
