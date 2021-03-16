@@ -63,9 +63,9 @@ describe("RedisClusterTest", () => {
   });
 
   after(async () => {
-    redisClient && await redisClient.quit();
-    container && await container.stop();
-    network && await network.stop();
+    redisClient && (await redisClient.quit());
+    container && (await container.stop());
+    network && (await network.stop());
   });
 
   it("should set and retrieve values from Redis", async () => {
